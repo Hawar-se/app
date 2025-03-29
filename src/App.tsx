@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, CssBaseline, Typography, Box } from "@mui/material";
 import ToDoList from "./ToDoList";
 
 function App() {
-  const [tasks, setTasks] = useState<string[]>([]);
+  // Load tasks from localStorage when the app starts
+  const [tasks, setTasks] = useState<string[]>(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
+
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   return (
     <Container
@@ -14,7 +23,7 @@ function App() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f0f4f8", // Soft grayish-blue background
+        backgroundColor: "#f0f4f8",
         padding: 4,
       }}
     >
